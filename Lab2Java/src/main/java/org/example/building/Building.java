@@ -51,6 +51,7 @@ public class Building implements IBuilding {
             conditions1.add(requestToDown(lifts[0].getCurrentFloor()));
             conditions1.add(nearestIsDown(state2.getName(), lifts[0].getCurrentFloor()));
             conditions1.add(nearestIsUp(state2.getName(), lifts[0].getCurrentFloor()));
+            conditions1.add(checkMoveIsImpossible(lifts[0].getCurrentFloor(), state1.getName()));
 
             List<Boolean> conditions2 = new ArrayList<>();
             conditions2.add(!lifts[1].isEmpty()
@@ -61,6 +62,7 @@ public class Building implements IBuilding {
             conditions2.add(requestToDown(lifts[1].getCurrentFloor()));
             conditions2.add(nearestIsDown(state1.getName(), lifts[1].getCurrentFloor()));
             conditions2.add(nearestIsUp(state1.getName(), lifts[1].getCurrentFloor()));
+            conditions2.add(checkMoveIsImpossible(lifts[1].getCurrentFloor(), state2.getName()));
 
             commands1.getCommand(state1, conditions1.indexOf(true) + 1).execute();
             commands2.getCommand(state2, conditions2.indexOf(true) + 1).execute();
@@ -146,6 +148,11 @@ public class Building implements IBuilding {
             targetFloor--;
         }
         return false;
+    }
+
+    private boolean checkMoveIsImpossible(final int floorNumber, final String stateName) {
+        return (floorNumber >= numberOfFloors && Objects.equals(stateName, Configuration.DOORS_CLOSE_UP))
+                || (floorNumber <= 1 && Objects.equals(stateName, Configuration.DOORS_CLOSE_DOWN));
     }
 
     public void getLogs() {

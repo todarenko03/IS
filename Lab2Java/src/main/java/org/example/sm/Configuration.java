@@ -26,6 +26,7 @@ public class Configuration {
         commands.setDefaultCommand(DOORS_CLOSE_UP, new MoveUpCommand(lift));
         commands.insert(DOORS_CLOSE_UP, 2, new OpenDoorsCommand(lift, state));
         commands.insert(DOORS_CLOSE_UP, 3, new OpenDoorsCommand(lift, state));
+        commands.insert(DOORS_CLOSE_UP, 7, new ImpossibleMoveCommand());
         commands.setDefaultCommand(DOORS_CLOSE_EMPTY, new CloseDoorsCommand(lift));
         commands.insert(DOORS_CLOSE_EMPTY, 3, new OpenDoorsCommand(lift, state));
         commands.insert(DOORS_CLOSE_EMPTY, 4, new OpenDoorsCommand(lift, state));
@@ -34,6 +35,7 @@ public class Configuration {
         commands.setDefaultCommand(DOORS_CLOSE_DOWN, new MoveDownCommand(lift));
         commands.insert(DOORS_CLOSE_DOWN, 2, new OpenDoorsCommand(lift, state));
         commands.insert(DOORS_CLOSE_DOWN, 4, new OpenDoorsCommand(lift, state));
+        commands.insert(DOORS_CLOSE_DOWN, 7, new ImpossibleMoveCommand());
         commands.setDefaultCommand(DONE, new EmptyCommand());
 
         transitions.setDefaultState(DOORS_OPEN_UP, DONE);
@@ -51,6 +53,7 @@ public class Configuration {
         transitions.setDefaultState(DOORS_CLOSE_UP, DOORS_CLOSE_UP);
         transitions.insert(DOORS_CLOSE_UP, 2, DOORS_OPEN_UP);
         transitions.insert(DOORS_CLOSE_UP, 3, DOORS_OPEN_UP);
+        transitions.insert(DOORS_CLOSE_UP, 7, DONE);
         transitions.setDefaultState(DOORS_CLOSE_EMPTY, DONE);
         transitions.insert(DOORS_CLOSE_EMPTY, 3, DOORS_OPEN_UP);
         transitions.insert(DOORS_CLOSE_EMPTY, 4, DOORS_OPEN_DOWN);
@@ -59,6 +62,7 @@ public class Configuration {
         transitions.setDefaultState(DOORS_CLOSE_DOWN, DOORS_CLOSE_DOWN);
         transitions.insert(DOORS_CLOSE_DOWN, 2, DOORS_OPEN_DOWN);
         transitions.insert(DOORS_CLOSE_DOWN, 4, DOORS_OPEN_DOWN);
+        transitions.insert(DOORS_CLOSE_DOWN, 7, DONE);
         transitions.setDefaultState(DONE, DONE);
     }
     public ICommandRepository getCommand() {
