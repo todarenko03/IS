@@ -14,19 +14,10 @@ public class Pair<T, U> {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Pair<?, ?> pair = (Pair<?, ?>) o;
-
-        if (!Objects.equals(getFirst(), pair.getFirst())) {
-            return false;
-        }
-        return Objects.equals(getSecond(), pair.getSecond());
+        return this == o
+                || (o instanceof Pair<?, ?> pair
+                && Objects.equals(getFirst(), pair.getFirst())
+                && Objects.equals(getSecond(), pair.getSecond()));
     }
 
     @Override

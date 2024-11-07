@@ -5,6 +5,7 @@ import org.example.lift.Lift;
 import org.example.sm.*;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Building implements IBuilding {
     private final Map<Integer, List<Integer>> requestsMap;
@@ -99,14 +100,9 @@ public class Building implements IBuilding {
     }
 
     private boolean checkUpIfOtherLiftMoveUp(final int floorNumber) {
-        int targetFloor = floorNumber;
-        while (targetFloor >= 1) {
-            if (!requestsMap.get(targetFloor).isEmpty()) {
-                return false;
-            }
-            targetFloor--;
-        }
-        return checkUp(floorNumber);
+        return IntStream.rangeClosed(1, floorNumber)
+                .anyMatch(targetFloor -> !requestsMap.get(targetFloor).isEmpty())
+                && checkUp(floorNumber);
     }
 
     private boolean checkUpIfOtherLiftMoveDown(final int floorNumber) {
@@ -114,25 +110,14 @@ public class Building implements IBuilding {
     }
 
     private boolean checkUp(final int floorNumber) {
-        int targetFloor = floorNumber;
-        while (targetFloor <= numberOfFloors) {
-            if (!requestsMap.get(targetFloor).isEmpty()) {
-                return true;
-            }
-            targetFloor++;
-        }
-        return false;
+        return IntStream.rangeClosed(floorNumber, floorNumber)
+                .anyMatch(targetFloor -> !requestsMap.get(targetFloor).isEmpty());
     }
 
     private boolean checkDownIfOtherLiftMoveUp(final int floorNumber) {
-        int targetFloor = floorNumber;
-        while (targetFloor <= numberOfFloors) {
-            if (!requestsMap.get(targetFloor).isEmpty()) {
-                return false;
-            }
-            targetFloor++;
-        }
-        return checkDown(floorNumber);
+        return IntStream.rangeClosed(floorNumber, floorNumber)
+                .allMatch(targetFloor -> requestsMap.get(targetFloor).isEmpty())
+                && checkDown(floorNumber);
     }
 
     private boolean checkDownIfOtherLiftMoveDown(final int floorNumber) {
@@ -140,14 +125,8 @@ public class Building implements IBuilding {
     }
 
     private boolean checkDown(final int floorNumber) {
-        int targetFloor = floorNumber;
-        while (targetFloor >= 1) {
-            if (!requestsMap.get(targetFloor).isEmpty()) {
-                return true;
-            }
-            targetFloor--;
-        }
-        return false;
+        return IntStream.rangeClosed(1, floorNumber)
+                .anyMatch(targetFloor -> !requestsMap.get(targetFloor).isEmpty());
     }
 
     private boolean checkMoveIsImpossible(final int floorNumber, final String stateName) {

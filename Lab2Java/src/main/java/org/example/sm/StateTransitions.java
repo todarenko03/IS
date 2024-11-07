@@ -1,7 +1,5 @@
 package org.example.sm;
 
-import org.example.commands.ICommand;
-
 import java.util.HashMap;
 
 public class StateTransitions implements IStateTransitions {

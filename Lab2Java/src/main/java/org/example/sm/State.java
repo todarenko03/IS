@@ -22,16 +22,8 @@ public final class State implements IState {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        State state = (State) o;
-
-        return Objects.equals(name, state.name);
+        return this == o
+                || (o instanceof State state && Objects.equals(name, state.name));
     }
 
     @Override

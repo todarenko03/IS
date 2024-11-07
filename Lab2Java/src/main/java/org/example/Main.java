@@ -2,7 +2,6 @@ package org.example;
 
 import org.example.building.Building;
 import org.example.building.IBuilding;
-import org.example.lift.ILift;
 
 import java.util.ArrayList;
 import java.util.List;
