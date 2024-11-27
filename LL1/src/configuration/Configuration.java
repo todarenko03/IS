@@ -588,13 +588,17 @@ public class Configuration implements IConfiguration {
         List<Integer> stack = new ArrayList<>();
         IIndex index = new Index();
 
-        commandMap.put(new ArrayList<Integer>(Arrays.asList(1, 0, 1, 0)), new NextAcceptErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index));
+        Map<Boolean, ICommand> errorHandler = new HashMap<>();
+        errorHandler.put(false, new EmptyCommand());
+        errorHandler.put(true, new ThrowExceptionCommand());
+
+        commandMap.put(new ArrayList<Integer>(Arrays.asList(1, 0, 1, 0)), new NextAcceptErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index, errorHandler));
         commandMap.put(new ArrayList<Integer>(Arrays.asList(0, 0, 0, 0)), new NextCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index));
-        commandMap.put(new ArrayList<Integer>(Arrays.asList(0, 0, 1, 0)), new NextErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index));
-        commandMap.put(new ArrayList<Integer>(Arrays.asList(0, 0, 1, 1)), new NextStackErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index));
+        commandMap.put(new ArrayList<Integer>(Arrays.asList(0, 0, 1, 0)), new NextErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index, errorHandler));
+        commandMap.put(new ArrayList<Integer>(Arrays.asList(0, 0, 1, 1)), new NextStackErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index, errorHandler));
         commandMap.put(new ArrayList<Integer>(Arrays.asList(1, 1, 0, 0)), new ReturnAcceptCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index));
-        commandMap.put(new ArrayList<Integer>(Arrays.asList(1, 1, 1, 0)), new ReturnAcceptErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index));
-        commandMap.put(new ArrayList<Integer>(Arrays.asList(0, 1, 1, 0)), new ReturnErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index));
+        commandMap.put(new ArrayList<Integer>(Arrays.asList(1, 1, 1, 0)), new ReturnAcceptErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index, errorHandler));
+        commandMap.put(new ArrayList<Integer>(Arrays.asList(0, 1, 1, 0)), new ReturnErrorCommand(token, state, stack, tokenNames, guidingSymbols, transitions, index, errorHandler));
 
         return commandMap;
     }

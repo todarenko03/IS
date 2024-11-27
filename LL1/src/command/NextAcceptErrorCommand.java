@@ -8,6 +8,7 @@ import token.IToken;
 import token.Token;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class NextAcceptErrorCommand implements ICommand {
@@ -19,6 +20,7 @@ public class NextAcceptErrorCommand implements ICommand {
     private List<List<String>> guidingSymbols;
     private List<Integer> transitions;
     private IIndex index;
+    Map<Boolean, ICommand> errorHandler;
 
     public NextAcceptErrorCommand(
             IToken token,
@@ -27,7 +29,8 @@ public class NextAcceptErrorCommand implements ICommand {
             List<String> tokenNames,
             List<List<String>> guidingSymbols,
             List<Integer> transitions,
-            IIndex index
+            IIndex index,
+            Map<Boolean, ICommand> errorHandler
     ) {
         this.token = token;
         this.state = state;
@@ -36,12 +39,12 @@ public class NextAcceptErrorCommand implements ICommand {
         this.guidingSymbols = guidingSymbols;
         this.transitions = transitions;
         this.index = index;
+        this.errorHandler = errorHandler;
     }
 
     @Override
     public void execute() {
-        Optional.ofNullable(guidingSymbols.get(state.getStateNumber()).contains(token.getName()) ? token.getName() : null)
-                .orElseThrow(() -> new SyntaxError("Compilation error was occurred"));
+        errorHandler.get(!guidingSymbols.get(state.getStateNumber()).contains(token.getName())).execute();
         index.upIndex();
         token.setName(tokenNames.get(index.getIndex()));
         state.setStateNumber(transitions.get(state.getStateNumber()));

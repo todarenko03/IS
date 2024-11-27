@@ -34,8 +34,6 @@ public class Lexer implements ILexer {
                 tokens.add(token.getKey());
                 remainingInput[0] = remainingInput[0].substring(token.getValue()).trim();
             });
-
-            matchedToken.orElseThrow(() -> new IllegalStateException("Не удалось сопоставить токен."));
         }
 
         tokens.add("END");
