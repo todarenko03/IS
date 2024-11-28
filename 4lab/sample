@@ -1,0 +1,46 @@
+add SpaceShip
+add Pirate as RedPirate
+add Pirate as BlackPirate
+
+SpaceShip able ForwardMove 
+SpaceShip able BackMove 
+SpaceShip able LeftRotate
+SpaceShip able RightRotate
+SpaceShip able RocketShoot
+SpaceShip able Collect
+SpaceShip able SpaceShipBeDestroid
+SpaceShip able Respawn
+
+RedPirate able ForwardMove 
+RedPirate able BackMove 
+RedPirate able LeftRotate
+RedPirate able RightRotate
+RedPirate able RocketLaunch
+RedPirate able Collect
+RedPirate able PirateBeDestroid
+RedPirate able Respawn
+
+BlackPirate able ForwardMove
+BlackPirate able BackMove 
+BlackPirate able LeftRotate
+BlackPirate able RightRotate
+BlackPirate able RocketLaunch
+BlackPirate able Collect
+BlackPirate able PitateBeDestroid
+BlackPirate able Respawn
+
+RocketShoot include Shoot
+ForwardMove include Move
+LeftRotate include Rotate
+RightRotate include Rotate
+
+FuelLose from Move 
+SpaceShipBeDestroid from CheckCollision
+BeDestroid from CheckCollision
+LeftWreckage from PirateBeDestroid
+LeftWreckage from SpaceShipBeDestroid
+Respawn from SpaceShipBeDestroid
+Respawn from PirateBeDestroid
+
+Game do CheckCollision when Move
+Game include CheckWinner
